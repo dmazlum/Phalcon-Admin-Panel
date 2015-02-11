@@ -9,7 +9,7 @@ class ControllerBase extends \Phalcon\Mvc\Controller
 
     public function initialize() {
 
-        $Mod = Modules::find();
+        $Mod = Modules::find("status = 1");
 
         if ($Mod != false) {
             $this->view->setVar("ActiveModules", $Mod);

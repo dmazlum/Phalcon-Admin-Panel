@@ -33,7 +33,13 @@
                             {% else %}
                                 <td><span class="label label-danger">Deaktif</span></td>
                             {% endif %}
-                            <td></td>
+                            <td>
+                                {% if module.status == 1 %}
+                                    <button class="btn btn-danger btn-xsm" onclick="moduleDeactive({{ module.id }},0)">Deaktif</button>
+                                {% else %}
+                                    <button class="btn btn-success btn-xsm" onclick="moduleDeactive({{ module.id }},1)">Aktif</button>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
 
@@ -44,4 +50,7 @@
         </div>
         <!-- /.box -->
     </div>
+{% endblock %}
+{% block js %}
+<script src="/public/js/AdminLTE/formProcess.js" type="text/javascript"></script>
 {% endblock %}

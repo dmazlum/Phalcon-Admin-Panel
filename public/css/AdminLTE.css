@@ -3535,3 +3535,8 @@ fieldset[disabled] .btn-vk.active {
   color: #587ea3;
   background-color: #ffffff;
 }
+.btn-xsm {
+  padding: 3px 5px;
+  font-size: 10px;
+  line-height: 1.5;
+}

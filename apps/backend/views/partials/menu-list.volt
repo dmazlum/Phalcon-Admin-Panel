@@ -16,6 +16,9 @@
             {%  if activemodules.module_file == "contact" %}
                 <i class="fa fa-envelope"></i>
             {% endif %}
+            {%  if activemodules.module_file == "gallery" %}
+                <i class="fa fa-photo"></i>
+            {% endif %}
             <span>{{ activemodules.module_name }}</span>
             <i class="fa fa-angle-left pull-right"></i>
         </a>

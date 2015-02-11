@@ -33,7 +33,13 @@ class News extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $sequence;
+    public $photo;
+
+    /**
+     *
+     * @var string
+     */
+    public $seq;
 
     /**
      * Independent Column Mapping.
@@ -45,8 +51,24 @@ class News extends \Phalcon\Mvc\Model
             'title' => 'title',
             'content' => 'content',
             'create_date' => 'create_date',
-            'sequence' => 'sequence'
+            'photo' => 'photo',
+            'seq' => 'seq'
         );
+    }
+
+    public function getTitle()
+    {
+        //The name is too short?
+        if (strlen($title) < 1) {
+            throw new \InvalidArgumentException('Haber başlığı çok kısa');
+        }
+
+        //The name is too short?
+        if ($title == "") {
+            throw new \InvalidArgumentException('Haber başlığı boş olamaz');
+        }
+
+        $this->title = $title;
     }
 
 }

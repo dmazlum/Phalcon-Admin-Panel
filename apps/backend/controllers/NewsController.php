@@ -24,6 +24,18 @@ class NewsController extends ControllerBase
     {
         $this->view->disable();
 
+        $title = $this->request->getPost('title');
+
+        $query = $this->db->insert('news',
+            array($title, '', date("Y.m.d H:i:s"), '', ''),
+            array('title', 'content', 'create_date', 'photo', 'seq')
+        );
+
+        if ($query) {
+            return $this->flash->success('Eklendi');
+        } else {
+            return $this->flash->error('Eklenemedi');
+        }
     }
 
     public function updateAction()
