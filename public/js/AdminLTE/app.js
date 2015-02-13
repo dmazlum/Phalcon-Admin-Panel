@@ -37,11 +37,13 @@ $(function() {
     /*     
      * Add collapse and remove events to boxes
      */
+
     $("[data-widget='collapse']").click(function() {
         //Find the box parent        
         var box = $(this).parents(".box").first();
         //Find the body and the footer
         var bf = box.find(".box-body, .box-footer");
+
         if (!box.hasClass("collapsed-box")) {
             box.addClass("collapsed-box");
             //Convert minus into plus

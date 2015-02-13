@@ -10,8 +10,15 @@ use Multiple\Backend\Models\News as News;
 class NewsController extends ControllerBase
 {
 
-    public function editAction()
+    public function editAction($id = NULL)
     {
+        //$news_query = News::findFirst('');
+
+        $News = News::find(array('order' => 'seq'));
+
+        if ($News != false) {
+            $this->view->setVar("ListNews", $News);
+        }
 
     }
 
@@ -22,7 +29,8 @@ class NewsController extends ControllerBase
 
     public function addAction()
     {
-        $this->view->disable();
+
+        //$Add = new News();
 
         $title = $this->request->getPost('title');
 
@@ -47,6 +55,36 @@ class NewsController extends ControllerBase
     public function deleteAction()
     {
         $this->view->disable();
+
+    }
+
+    public function orderAction($id)
+    {
+        $newsOrder = News::findFirst('id=' . (int)$id);
+
+        if ($this->request->isPost()) {
+
+            $newsOrder->setOrder($this->request->getPost('seq', 'int'));
+
+            if (!$newsOrder->update()) {
+                $this->flash->error('Sıralama Hatası');
+            } else {
+                $this->flash->success('Sıralama Başarılıdır');
+            }
+        }
+
+
+//        $query = $this->db->update("news",
+//            array("seq"),
+//            array($this->request->getPost('seq', 'int')),
+//            "id=" . $this->request->getPost('fieldID', 'int')
+//        );
+//
+//        if ($query) {
+//            return $this->flash->success('Modül Güncellendi');
+//        } else {
+//            return $this->flash->error('Modül Güncellenemedi');
+//        }
 
     }
 }

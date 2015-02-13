@@ -39,6 +39,12 @@ class News extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $status;
+
+    /**
+     *
+     * @var string
+     */
     public $seq;
 
     /**
@@ -52,11 +58,12 @@ class News extends \Phalcon\Mvc\Model
             'content' => 'content',
             'create_date' => 'create_date',
             'photo' => 'photo',
+            'status' => 'status',
             'seq' => 'seq'
         );
     }
 
-    public function getTitle()
+    public function setTitle()
     {
         //The name is too short?
         if (strlen($title) < 1) {
@@ -69,6 +76,13 @@ class News extends \Phalcon\Mvc\Model
         }
 
         $this->title = $title;
+    }
+
+    public function setOrder()
+    {
+        if ($seq == "") {
+            return $this->seq = "000";
+        }
     }
 
 }
