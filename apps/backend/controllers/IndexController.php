@@ -1,13 +1,14 @@
 <?php
 
-namespace Multiple\Backend\Controllers;
+namespace Modules\Backend\Controllers;
 
 class IndexController extends ControllerBase
 {
 
-	public function indexAction()
-	{
-		return $this->_forward('/login');
-	}
+    public function indexAction()
+    {
+
+    }
 
 }
+

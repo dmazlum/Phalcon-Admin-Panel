@@ -1,6 +1,7 @@
 <?php
 
-namespace Multiple\Backend;
+namespace Modules\Backend;
+use Modules\Backend\Plugins\MyValidation;
 
 class Module
 {
@@ -11,39 +12,60 @@ class Module
 		$loader = new \Phalcon\Loader();
 
 		$loader->registerNamespaces(array(
-			'Multiple\Backend\Controllers' => '../apps/backend/controllers/',
-			'Multiple\Backend\Models' => '../apps/backend/models/',
-			'Multiple\Backend\Plugins' => '../apps/backend/plugins/',
-		));
+			'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
+			'Modules\Backend\Models' => __DIR__ . '/models/',
+			'Modules\Backend\Plugins' => __DIR__ . '/plugins/'
+			));
 
 		$loader->register();
 	}
 
-	/**
-	 * Register the services here to make them general or register in the ModuleDefinition to make them module-specific
-	 */
 	public function registerServices($di)
 	{
 
-		//Registering a dispatcher
-		$di->set('dispatcher', function() {
+		/**
+		 * Read configuration
+		 */
+		$config = include __DIR__ . "/config/config.php";
+
+		$di['dispatcher']= function() {
+
+			$eventsManager = new \Phalcon\Events\Manager();
+			$eventsManager->attach("dispatch:beforeException", function($event, $dispatcher, $exception) {
+
+				//Handle 404 exceptions
+				if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception) {
+					$dispatcher->forward(array(
+						'controller' => 'index',
+						'action' => 'show404'
+					));
+					return false;
+				}
+
+				//Handle other exceptions
+				$dispatcher->forward(array(
+					'controller' => 'index',
+					'action' => 'show503'
+				));
+
+				return false;
+			});
 
 			$dispatcher = new \Phalcon\Mvc\Dispatcher();
+			$dispatcher->setDefaultNamespace("Modules\Backend\Controllers");
 
-			//Attach a event listener to the dispatcher
-			$eventManager = new \Phalcon\Events\Manager();
-			$eventManager->attach('dispatch', new \Acl('backend'));
-
-			$dispatcher->setEventsManager($eventManager);
-			$dispatcher->setDefaultNamespace("Multiple\Backend\Controllers\\");
+			//Bind the EventsManager to the dispatcher
+			$dispatcher->setEventsManager($eventsManager);
 
 			return $dispatcher;
-		});
+		};
 
-		//Registering the view component
-		$di->set('view', function() {
+		/**
+		 * Setting up the view component
+		 */
+		$di['view'] = function() {
+
 			$view = new \Phalcon\Mvc\View();
-			$view->setViewsDir('../apps/backend/views/');
 
 			$view->registerEngines(array(
 				'.volt' => function ($view, $di) {
@@ -51,29 +73,44 @@ class Module
 					$volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
 					$volt->setOptions(array(
-						'compiledPath' => "../apps/cache/",
+						'compiledPath' => __DIR__ .'/cache/',
 						'compiledSeparator' => '_',
 						'compileAlways' => true // close it
-					));
+						));
+
+					//Add Functions
+					$volt->getCompiler()->addFunction('strtotime', 'strtotime');
 
 					return $volt;
 				},
 				'.phtml' => 'Phalcon\Mvc\View\Engine\Php'
-			));
+				));
+
+			$view->setViewsDir(__DIR__ . '/views/');
+			$view->setLayoutsDir('../../common/layouts/');
+			$view->setTemplateAfter('main');
+
 			return $view;
-		});
+		};
 
-		//Set a different connection in each module
-		$di->set('db', function() {
+		/**
+		 * Database connection is created based in the parameters defined in the configuration file
+		 */
+		$di['db'] = function() use ($config) {
 			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-				"host" => "localhost",
-				"username" => "root",
-				"password" => "",
-				"dbname" => "admin",
+				"host" => $config->database->host,
+				"username" => $config->database->username,
+				"password" => $config->database->password,
+				"dbname" => $config->database->name,
 				'charset' => "utf8"
-			));
-		});
+				));
+		};
 
-	}
+		//Validator
+		$di['MyValidation'] = function() {
+			return new MyValidation();
+		};
+
+}
 
 }

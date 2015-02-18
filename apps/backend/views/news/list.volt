@@ -35,7 +35,6 @@
                             <td>X</td>
                         </tr>
                         </tbody>
-
                     </table>
                 </div>
                 <!-- /.box-body -->

@@ -2,26 +2,25 @@
  * Created by devrim on 2/11/2015.
  */
 
-//Tüm Editleme Formlarını Kapanır Şekilde Getirir
 $(document).ready(function () {
 
-    //Find the box parent
-    var box = $("#collapse_load").first();
-
-    //Find the body and the footer
-    var bf = box.find(".box-body, .box-footer");
-
-    if (box.hasClass("collapsed-box")) {
-        //box.addClass("collapsed-box");
-        //Convert minus into plus
-        $(this).children(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
-        bf.slideUp();
-    } else {
-        box.removeClass("collapsed-box");
-        //Convert plus into minus
-        $(this).children(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
-        bf.slideDown();
-    }
+    ////Find the box parent
+    //var box = $("#collapse_load").first();
+    //
+    ////Find the body and the footer
+    //var bf = box.find(".box-body, .box-footer");
+    //
+    //if (box.hasClass("collapsed-box")) {
+    //    //box.addClass("collapsed-box");
+    //    //Convert minus into plus
+    //    $(this).children(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
+    //    bf.slideUp();
+    //} else {
+    //    box.removeClass("collapsed-box");
+    //    //Convert plus into minus
+    //    $(this).children(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
+    //    bf.slideDown();
+    //}
 });
 
 /**
@@ -38,7 +37,7 @@ function moduleDeactive(id, val) {
 
         if (val != 1) {
             $.post("/admin/controlpanel/modules/disable", {id: id})
-                .done(function (data) {
+                .done(function () {
                     //console.log(data);
                     location.reload();
                 })
@@ -47,7 +46,7 @@ function moduleDeactive(id, val) {
                 })
         } else {
             $.post("/admin/controlpanel/modules/enable", {id: id})
-                .done(function (data) {
+                .done(function () {
                     location.reload();
                 })
                 .fail(function (error) {
@@ -59,6 +58,85 @@ function moduleDeactive(id, val) {
     }
 }
 
-$('input[name=seq]').on('change', function () {
-    $("input[name=fieldID]").attr('checked', 'checked');
+/* Add Function */
+$(function () {
+    $('#addForm').submit(function (e) {
+        e.preventDefault();
+
+        $(".message").hide();
+
+        jQuery('input').attr('data-prompt-position', 'bottomLeft');
+        jQuery('input').data('promptPosition', 'bottomLeft');
+        jQuery('textarea').attr('data-prompt-position', 'bottomLeft');
+        jQuery('textarea').data('promptPosition', 'bottomLeft');
+        jQuery('select').attr('data-prompt-position', 'bottomLeft');
+        jQuery('select').data('promptPosition', 'bottomLeft');
+
+        //if invalid do nothing
+        if (!$('#addForm').validationEngine('validate')) {
+            return false;
+        }
+
+        var form = document.getElementById('addForm');
+        var formData = new FormData(form);
+        var formUrl = $("#addForm").attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: formUrl,
+            data: formData,
+            async: false,
+            success: function (data) {
+                $(".message").html(data);
+                $(".message").fadeIn("slow");
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return false;
+    });
+});
+
+/* Delete Function */
+$('#delete').click(function () {
+
+    event.preventDefault();
+
+    var DeleteUrl = $("input[name=DeleteURL]").val();
+    var count_checked = $("[name='fieldID[]']:checked").length; // count the checked
+
+    if (count_checked == 0) {
+        alert("Lütfen bir kayıt seçiniz");
+        return false;
+    }
+
+    if (count_checked > 0) {
+        if (confirm("Kayıtları silmek istiyor musunuz?")) {
+            $.post(DeleteUrl, $("[name='fieldID[]']:checked").serialize(), function () {
+                location.reload();
+            });
+        }
+    }
+});
+
+/* Order Function */
+$('#order').click(function () {
+
+    event.preventDefault();
+
+    var OrderUrl = $("input[name=SeqURL]").val();
+    var OrderFields = $("input[name='seq[]'], [name='seqID[]']").serialize();
+
+    if (OrderFields != '') {
+        if (confirm("Kayıtları sıralamak istiyor musunuz?")) {
+            $.post(OrderUrl, OrderFields, function (data) {
+                location.reload();
+                //console.log(data);
+            });
+        }
+    }
 });

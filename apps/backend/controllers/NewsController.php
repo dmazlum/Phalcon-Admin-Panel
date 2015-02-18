@@ -1,90 +1,117 @@
 <?php
 
-namespace Multiple\Backend\Controllers;
+namespace Modules\Backend\Controllers;
 
-/**
- * Add Your Models
- */
-use Multiple\Backend\Models\News as News;
+use Modules\Backend\Models\News as News;
 
 class NewsController extends ControllerBase
 {
-
-    public function editAction($id = NULL)
+    public function allAction()
     {
-        //$news_query = News::findFirst('');
-
         $News = News::find(array('order' => 'seq'));
 
         if ($News != false) {
             $this->view->setVar("ListNews", $News);
         }
+    }
+
+    /**
+     * @param null $id
+     */
+    public function editAction($id = NULL)
+    {
 
     }
 
+    /**
+     * List News
+     */
     public function listAction()
     {
 
     }
 
+    /**
+     * Add News
+     * @return mixed
+     */
     public function addAction()
     {
 
-        //$Add = new News();
+        //Validate All Fields
+        $validate = $this->MyValidation->validate($_POST);
 
-        $title = $this->request->getPost('title');
-
-        $query = $this->db->insert('news',
-            array($title, '', date("Y.m.d H:i:s"), '', ''),
-            array('title', 'content', 'create_date', 'photo', 'seq')
-        );
-
-        if ($query) {
-            return $this->flash->success('Eklendi');
+        if (count($validate)) {
+            foreach ($validate as $message) {
+                $this->flash->error($message);
+                return false;
+            }
         } else {
-            return $this->flash->error('Eklenemedi');
+
+            $Add = new News();
+
+            $Add->assign(array(
+                'title' => $this->request->getPost('title', 'striptags'),
+                'content' => $this->request->getPost('content'),
+                'create_date' => date("Y.m.d H:i:s"),
+                'photo' => $this->request->getPost('photos'),
+                'status' => 1,
+                'seq' => $Add->setOrder()
+            ));
+
+            if (!$Add->save()) {
+                return $this->flash->error('Kayıt Sırasında Hata Oluştu');
+            } else {
+                return $this->flash->success('Eklendi');
+            }
         }
+
+        exit;
     }
 
     public function updateAction()
     {
         $this->view->disable();
-
     }
 
+    /**
+     * Delete News
+     * @return mixed
+     */
     public function deleteAction()
     {
         $this->view->disable();
 
+        $selected_ID = $this->request->getPost('fieldID');
+
+        foreach ($selected_ID as $key) {
+            $this->db->delete(
+                "news",
+                "id =" . $key
+            );
+        }
     }
 
-    public function orderAction($id)
+    /**
+     * Order News
+     */
+    public function orderAction()
     {
-        $newsOrder = News::findFirst('id=' . (int)$id);
+        $orderFields = $this->request->getPost('seq');
+        $orderID = $this->request->getPost('seqID');
 
-        if ($this->request->isPost()) {
+        foreach ($orderFields as $key => $value) {
 
-            $newsOrder->setOrder($this->request->getPost('seq', 'int'));
+            $update = $this->db->update(
+                "news",
+                array("seq"),
+                array($value),
+                "id=" . $orderID[$key]
+            );
 
-            if (!$newsOrder->update()) {
-                $this->flash->error('Sıralama Hatası');
-            } else {
-                $this->flash->success('Sıralama Başarılıdır');
+            if ($update) {
+                $this->flash->success('Sıralama başarılı');
             }
         }
-
-
-//        $query = $this->db->update("news",
-//            array("seq"),
-//            array($this->request->getPost('seq', 'int')),
-//            "id=" . $this->request->getPost('fieldID', 'int')
-//        );
-//
-//        if ($query) {
-//            return $this->flash->success('Modül Güncellendi');
-//        } else {
-//            return $this->flash->error('Modül Güncellenemedi');
-//        }
-
     }
 }

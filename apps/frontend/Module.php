@@ -1,6 +1,6 @@
 <?php
 
-namespace Multiple\Frontend;
+namespace Modules\Frontend;
 
 class Module
 {
@@ -11,47 +11,51 @@ class Module
 		$loader = new \Phalcon\Loader();
 
 		$loader->registerNamespaces(array(
-			'Multiple\Frontend\Controllers' => '../apps/frontend/controllers/',
-			'Multiple\Frontend\Models' => '../apps/frontend/models/',
+			'Modules\Frontend\Controllers' => __DIR__ . '/controllers/',
+			'Modules\Frontend\Models' => __DIR__ . '/models/',
 		));
 
 		$loader->register();
 	}
 
-	/**
-	 * Register the services here to make them general or register in the ModuleDefinition to make them module-specific
-	 */
 	public function registerServices($di)
 	{
 
-		//Registering a dispatcher
-		$di->set('dispatcher', function () {
+		/**
+		 * Read configuration
+		 */
+		$config = include __DIR__ . "/config/config.php";
+
+		$di['dispatcher'] = function() {
 			$dispatcher = new \Phalcon\Mvc\Dispatcher();
-
-			//Attach a event listener to the dispatcher
-			$eventManager = new \Phalcon\Events\Manager();
-			$eventManager->attach('dispatch', new \Acl('frontend'));
-
-			$dispatcher->setEventsManager($eventManager);
-			$dispatcher->setDefaultNamespace("Multiple\Frontend\Controllers\\");
+			$dispatcher->setDefaultNamespace("Modules\Frontend\Controllers");
 			return $dispatcher;
-		});
+		};
 
-		//Registering the view component
-		$di->set('view', function () {
+		/**
+		 * Setting up the view component
+		 */
+		$di['view'] = function() {
 			$view = new \Phalcon\Mvc\View();
-			$view->setViewsDir('../apps/frontend/views/');
-			return $view;
-		});
 
-		$di->set('db', function () {
+			$view->setViewsDir(__DIR__ . '/views/');
+			$view->setLayoutsDir('../../common/layouts/');
+			$view->setTemplateAfter('main');
+
+			return $view;
+		};
+
+		/**
+		 * Database connection is created based in the parameters defined in the configuration file
+		 */
+		$di['db'] = function() use ($config) {
 			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-				"host" => "localhost",
-				"username" => "root",
-				"password" => "secret",
-				"dbname" => "invo"
+				"host" => $config->database->host,
+				"username" => $config->database->username,
+				"password" => $config->database->password,
+				"dbname" => $config->database->name
 			));
-		});
+		};
 
 	}
 

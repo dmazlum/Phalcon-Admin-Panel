@@ -1,6 +1,6 @@
 <?php
 
-namespace Multiple\Backend\Models;
+namespace Modules\Backend\Models;
 
 class News extends \Phalcon\Mvc\Model
 {
@@ -66,22 +66,46 @@ class News extends \Phalcon\Mvc\Model
     public function setTitle()
     {
         //The name is too short?
-        if (strlen($title) < 1) {
-            throw new \InvalidArgumentException('Haber başlığı çok kısa');
+        if (strlen($this->title) < 1) {
+            return $this->getMessages('Haber başlığı kısa olamaz');
         }
 
         //The name is too short?
-        if ($title == "") {
-            throw new \InvalidArgumentException('Haber başlığı boş olamaz');
+        if ($this->title == "") {
+            return $this->getMessages('Haber başlığı boş olamaz');
         }
 
-        $this->title = $title;
+        return $this->title;
+    }
+
+    public function setContent()
+    {
+        //The name is too short?
+        if (strlen($this->content) < 10) {
+            return $this->getMessages('Haber içeriği çok kısa olamaz');
+        }
+
+        //The name is too short?
+        if ($this->content == "") {
+            return $this->getMessages('Haber içeriği boş olamaz');
+        }
+
+        return $this->content;
     }
 
     public function setOrder()
     {
-        if ($seq == "") {
+        if ($this->seq == "") {
             return $this->seq = "000";
+        }
+    }
+
+    public function setId($id)
+    {
+        if ($id == "") {
+            return $this->getMessages('Lütfen bir kayıt seçiniz');
+        } else {
+            $this->id = $id;
         }
     }
 

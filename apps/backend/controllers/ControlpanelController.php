@@ -1,11 +1,7 @@
 <?php
 
-namespace Multiple\Backend\Controllers;
-
-/**
- * Add Your Models
- */
-use Multiple\Backend\Models\Modules as Modules;
+namespace Modules\Backend\Controllers;
+use Modules\Backend\Models\Modules as Modules;
 
 class ControlpanelController extends ControllerBase
 {

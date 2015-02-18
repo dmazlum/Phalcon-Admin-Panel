@@ -9,7 +9,9 @@
     <!-- Ionicons -->
     <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
-    <link href="/public/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="/css/validation/validationEngine.jquery.css" rel="stylesheet" type="text/css" />
+    <link href="/css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -204,7 +206,11 @@
 <!-- Bootstrap -->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
-<script src="/public/js/AdminLTE/app.js" type="text/javascript"></script>
-{% block js %}{% endblock %}
+<script src="/js/AdminLTE/app.js" type="text/javascript"></script>
+<!-- Validation -->
+<script type="text/javascript" src="/js/plugins/validation/jquery.validationEngine.js"></script>
+<script type="text/javascript" src="/js/plugins/validation/jquery.validationEngine-tr.js"></script>
+{% block js %}
+{% endblock %}
 </body>
 </html>

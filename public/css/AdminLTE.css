@@ -1382,6 +1382,7 @@ body > .header .logo .icon {
   border-radius: 3px;
   width: 100%;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 9px;
 }
 .box.box-primary {
   border-top-color: #3c8dbc;
@@ -3539,4 +3540,37 @@ fieldset[disabled] .btn-vk.active {
   padding: 3px 5px;
   font-size: 10px;
   line-height: 1.5;
+}
+.input-small {
+  width: 15%;
+  padding: 0 0 0 7px;
+}
+
+input.error {
+  border: 1px solid #ff0000;
+}
+span.error {
+  color: red;
+  font-size: 11px;
+}
+.errorMessage {
+  padding: 15px;
+  position: relative;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  height:50px;
+}
+
+.successMessage {
+  padding: 15px;
+  position: relative;
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  height:50px;
 }

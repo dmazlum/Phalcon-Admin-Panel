@@ -1,8 +1,8 @@
 <?php
 
-namespace Multiple\Backend\Controllers;
+namespace Modules\Backend\Controllers;
 
-use Multiple\Backend\Models\Users as Users;
+use Modules\Backend\Models\Users as Users;
 
 class LoginController extends ControllerBase
 {
@@ -14,11 +14,6 @@ class LoginController extends ControllerBase
             'name' => $user->name_surname,
             'username' => $user->username
         ));
-    }
-
-    public function indexAction()
-    {
-
     }
 
     public function userloginAction()
@@ -58,7 +53,6 @@ class LoginController extends ControllerBase
     public function logoutAction()
     {
         $this->session->destroy();
-        return $this->response->redirect('login');
-
+        return $this->response->redirect('admin');
     }
 }

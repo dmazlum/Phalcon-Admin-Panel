@@ -1,6 +1,6 @@
 <?php
 
-namespace Multiple\Backend\Models;
+namespace Modules\Backend\Models;
 
 class Modules extends \Phalcon\Mvc\Model
 {
