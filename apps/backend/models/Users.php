@@ -45,6 +45,18 @@ class Users extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $last_login;
+
+    /**
+     *
+     * @var string
+     */
+    public $ip_add;
+
+    /**
+     *
+     * @var string
+     */
     public $status;
 
     /**
@@ -58,7 +70,9 @@ class Users extends \Phalcon\Mvc\Model
             'username' => 'username', 
             'password' => 'password', 
             'created_date' => 'created_date', 
-            'role' => 'role', 
+            'role' => 'role',
+            'last_login' => 'last_login',
+            'ip_add' => 'ip_add',
             'status' => 'status'
         );
     }

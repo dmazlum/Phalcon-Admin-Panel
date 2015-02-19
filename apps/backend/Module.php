@@ -1,7 +1,9 @@
 <?php
 
 namespace Modules\Backend;
-use Modules\Backend\Plugins\MyValidation;
+
+use Modules\Backend\Plugins\MyValidation,
+	Modules\Backend\Plugins\MyResizer;
 
 class Module
 {
@@ -111,6 +113,10 @@ class Module
 			return new MyValidation();
 		};
 
+		//Resizer
+		$di['MyResizer'] = function() {
+			return new MyResizer();
+		};
 }
 
 }

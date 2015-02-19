@@ -19,8 +19,10 @@ class ControllerBase extends \Phalcon\Mvc\Controller
         $pagingUrl = str_replace($_SERVER["SCRIPT_NAME"], '', $_SERVER["REQUEST_URI"]);
         $pagingUrl = explode('/', $pagingUrl);
 
+        if (@$pagingUrl[4] == "") {
+            $pagingUrl[4] = NULL;
+        }
+
         $this->view->setVar('pagingUrl', $pagingUrl);
-
     }
-
 }

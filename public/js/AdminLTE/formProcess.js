@@ -58,6 +58,41 @@ function moduleDeactive(id, val) {
     }
 }
 
+/**
+ * Kayıt Durumu Değişikliği
+ * @param int id
+ * @param string val
+ */
+function recordAction(id, status, val) {
+
+//Stop form from submitting normally
+    event.preventDefault();
+
+    if (confirm('Bu kaydın durumunu değiştirmek istiyor musunuz?')) {
+
+        if (status != 1) {
+            $.post("/admin/"+val, {id: id})
+                .done(function () {
+                    //console.log(data);
+                    location.reload();
+                })
+                .fail(function (error) {
+                    console.log(error);
+                })
+        } else {
+            $.post("/admin/"+val, {id: id})
+                .done(function () {
+                    location.reload();
+                })
+                .fail(function (error) {
+                    console.log(error);
+                })
+        }
+    } else {
+        // Do nothing!
+    }
+}
+
 /* Add Function */
 $(function () {
     $('#addForm').submit(function (e) {
@@ -91,7 +126,7 @@ $(function () {
                 $(".message").fadeIn("slow");
             },
             error: function (request, status, error) {
-                alert(request.responseText);
+                console.log(request.responseText);
             },
             cache: false,
             contentType: false,

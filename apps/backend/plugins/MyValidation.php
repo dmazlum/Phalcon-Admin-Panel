@@ -12,16 +12,16 @@ class MyValidation extends Validation
     public function initialize()
     {
         $this->add('title', new StringLength(array(
-            'min' => 1,
-            'messageMinimum' => 'Başlık çok kısa olamaz'
+            'min' => 2,
+            'messageMinimum' => '<strong>HATA</strong> Başlık çok kısa olamaz'
         )));
 
         $this->add('title', new PresenceOf(array(
-            'message' => 'Başlık boş olamaz'
+            'message' => '<strong>HATA</strong> Başlık boş olamaz'
         )));
 
         $this->add('content', new PresenceOf(array(
-            'message' => 'İçerik boş olamaz'
+            'message' => '<strong>HATA</strong> İçerik boş bırakılamaz'
         )));
     }
 }

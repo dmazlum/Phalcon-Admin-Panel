@@ -1,4 +1,5 @@
 <div class="box box-primary" id="collapse_load">
+    <div class="message"></div>
     <div class="box-header">
         <h3 class="box-title">Haber Düzenleme Formu</h3>
         <div class="box-tools pull-right">
@@ -7,25 +8,33 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form role="form" method="post" action="/admin/news/update">
+    {% for update in UpdateNews %}
+    <form role="form" action="/admin/news/update/{{ update.id }}" id="addForm" enctype="multipart/form-data">
         <div class="box-body">
             <div class="form-group">
-                <label>Haber Başlığı</label>
-                <input type="text" name="title" class="form-control" id="news" placeholder="Haber Başlığı">
+                <label for="news">Haber Başlığı <span class="text-red">*</span></label>
+                <input type="text" name="title" class="form-control validate[required]" id="news" placeholder="Haber Başlığı" value="{{ update.title }}">
             </div>
             <div class="form-group">
-                <label>Haber İçeriği</label>
-                    <textarea name="content" id="editor" class="form-control" rows="3"
-                              placeholder="Haber İçeriği"></textarea>
+                <label for="editor">Haber İçeriği <span class="text-red">*</span></label>
+                <textarea name="content" id="editor" class="form-control validate[required]" placeholder="Haber İçeriği" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ update.content }}"</textarea>
             </div>
+            {% if update.photo != '' %}
+                <div class="form-group">
+                    <label for="photo">Eklenen Fotoğraf </label>
+                    <br>
+                    <img src="/uploads/{{ update.photo }}" class="margin">
+                </div>
+            {% endif %}
             <div class="form-group">
-                <label>Haber Fotoğrafı</label>
+                <label>Fotoğraf Ekle</label>
                 <input type="file" name="photos">
             </div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-            <button type="submit" class="btn btn-primary">Haber Ekle</button>
+            <input type="submit" class="btn btn-primary" id="add" value="Haber Ekle">
         </div>
     </form>
+    {% endfor %}
 </div>

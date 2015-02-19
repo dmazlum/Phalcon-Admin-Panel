@@ -19,7 +19,7 @@
                 <textarea name="content" id="editor" class="form-control validate[required]" placeholder="Haber İçeriği" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
             </div>
             <div class="form-group">
-                <label>Haber Fotoğrafı</label>
+                <label>Fotoğraf Ekle</label>
                 <input type="file" name="photos">
             </div>
         </div>

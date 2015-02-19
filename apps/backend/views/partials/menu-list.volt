@@ -23,7 +23,7 @@
             <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li><a href="/admin/{{ activemodules.module_file }}/all"><i class="fa fa-angle-double-right"></i> Ekle / Düzenle</a></li>
+            <li><a href="/admin/{{ activemodules.module_file }}/index"><i class="fa fa-angle-double-right"></i> Ekle / Düzenle</a></li>
             <li><a href="/admin/{{ activemodules.module_file }}/list"><i class="fa fa-angle-double-right"></i> Listele</a></li>
         </ul>
     </li>

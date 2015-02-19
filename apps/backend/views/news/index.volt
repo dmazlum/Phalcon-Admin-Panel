@@ -6,16 +6,10 @@
     <li class="active">Haber Ekle / Düzenle</li>
 {% endblock %}
 {% block body %}
-    {% set Action = pagingUrl[3] %}
 
-    {% if Action == 'edit' %}
+    {% if pagingUrl[4] == 'edit' %}
         {% include "news/forms/edit.volt" %}
     {% endif %}
-
-    <div class="alert alert-success alert-dismissable" style="display: none;">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <b>Başarılı</b> İşlem
-    </div>
 
     <div class="box">
         <div class="box-header">
@@ -57,15 +51,15 @@
                                 <td class="text-center"><span class="label label-danger">Deaktif</span></td>
                             {% endif %}
                             <td>
-                                <a href="/admin/news/edit/{{ news.id }}">
-                                    <button class="btn btn-primary btn-xsm">Düzenle</button>
+                                <a href="/admin/news/index/edit/{{ news.id }}">
+                                    <input type="button" class="btn btn-primary btn-xsm" value="Düzenle">
                                 </a>
                                 {% if news.status == 1 %}
-                                    <button class="btn btn-danger btn-xsm" onclick="moduleDeactive({{ news.id }},0)">
+                                    <button class="btn btn-danger btn-xsm" onclick="recordAction({{ news.id }},0,'news/status/disable')">
                                         Deaktif
                                     </button>
                                 {% else %}
-                                    <button class="btn btn-success btn-xsm" onclick="moduleDeactive({{ news.id }},1)">
+                                    <button class="btn btn-success btn-xsm" onclick="recordAction({{ news.id }},1,'news/status/enable')">
                                         Aktif
                                     </button>
                                 {% endif %}
@@ -91,7 +85,7 @@
     </div>
     <!-- /.box -->
 
-    {% if Action == 'all' %}
+    {% if pagingUrl[4] != 'edit' %}
     {% include "news/forms/add.volt" %}
     {% endif %}
 

@@ -12,13 +12,14 @@ class LoginController extends ControllerBase
         $this->session->set('auth', array(
             'id' => $user->id,
             'name' => $user->name_surname,
-            'username' => $user->username
+            'username' => $user->username,
+            'role' => $user->role
         ));
     }
 
     public function userloginAction()
     {
-        $this->view->disable();
+        //$this->view->disable();
 
         if ($this->request->isPost()) {
 
@@ -38,16 +39,24 @@ class LoginController extends ControllerBase
 
                 $this->_registerSession($user);
 
+                //Last Login and IP Address
+                $ipAddress = $this->request->getClientAddress();
+                $date = date("Y-m-d H:i:s");
+
+                $this->db->query("update users set
+                                        ip_add='$ipAddress',
+                                        last_login = '$date'
+                                        WHERE
+                                        username = '$username'");
+
+
                 //Forward to the 'dashboard' controller if the user is valid
                 return $this->response->redirect('admin/controlpanel/index');
             }
 
-            $this->flash->error('Wrong email/password');
+            $this->flash->error('<strong>HATA</strong> Kullanıcı adı veya şifreniz yanlıştır');
+            return false;
         }
-
-        //Forward to the login form again
-       // return $this->response->redirect('login');
-
     }
 
     public function logoutAction()
