@@ -98,7 +98,10 @@
     <script type="text/javascript">
         $(function () {
             $("#editor").wysihtml5({
-                "html": true,
+                toolbar: {
+                    "html": true,
+                    "fa": true
+            },
                 locale: "tr-TR"
             });
         });
@@ -119,4 +122,5 @@
             });
         });
     </script>
+    <script src="/js/AdminLTE/canvasImage.js" type="text/javascript"></script>
 {% endblock %}

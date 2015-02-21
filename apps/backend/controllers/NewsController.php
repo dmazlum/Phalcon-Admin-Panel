@@ -68,9 +68,7 @@ class NewsController extends ControllerBase
                 //Print the real file names and their sizes
                 foreach ($this->request->getUploadedFiles() as $file) {
 
-                    $img = $this->MyResizer->resize($file->getFilename(), $file->getPath() ,'800','600','72');
-
-                    $file->moveTo('uploads/' . $img);
+                    $file->moveTo('uploads/' . $file->getName());
 
                     //Get Filename
                     $fileName = $file->getName();
@@ -112,10 +110,11 @@ class NewsController extends ControllerBase
     }
 
     /**
-     * Delete News
+     * Delete News and News Photos
+     * @param sting $action
      * @return mixed
      */
-    public function deleteAction()
+    public function deleteAction($action = NULL)
     {
         $this->view->disable();
 
@@ -126,6 +125,22 @@ class NewsController extends ControllerBase
                 "news",
                 "id =" . $key
             );
+        }
+
+        //Delete Photos
+        if ($action == "photo") {
+
+            $PhotoId = $this->request->getPost('id');
+            $photos = News::findFirst("id=".$PhotoId);
+
+            if ($photos != "false") {
+                $this->db->update(
+                    "news",
+                    array("photo"),
+                    array(""),
+                    "id =" . $PhotoId
+                );
+            }
         }
     }
 

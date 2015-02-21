@@ -20,9 +20,6 @@ $(function() {
     }).disableSelection();
     ;
 
-    //bootstrap WYSIHTML5 - text editor
-    $(".textarea").wysihtml5();
-
     $('.daterange').daterangepicker(
             {
                 ranges: {
@@ -39,12 +36,6 @@ $(function() {
     function(start, end) {
         alert("You chose: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     });
-
-    /* jQueryKnob */
-    $(".knob").knob();
-
-     //The Calender
-    $("#calendar").datepicker();
 
     //SLIMSCROLL FOR CHAT WIDGET
     $('#chat-box').slimScroll({

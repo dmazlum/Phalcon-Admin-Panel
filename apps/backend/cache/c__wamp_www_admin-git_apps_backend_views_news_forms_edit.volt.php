@@ -8,25 +8,25 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    {% for update in UpdateNews %}
-    <form role="form" action="/admin/news/update/{{ update.id }}" id="addForm" enctype="multipart/form-data">
+    <?php foreach ($UpdateNews as $update) { ?>
+    <form role="form" action="/admin/news/update/<?php echo $update->id; ?>" id="addForm" enctype="multipart/form-data">
         <div class="box-body">
             <div class="form-group">
                 <label for="news">Haber Başlığı <span class="text-red">*</span></label>
-                <input type="text" name="title" class="form-control validate[required]" id="news" placeholder="Haber Başlığı" value="{{ update.title }}">
+                <input type="text" name="title" class="form-control validate[required]" id="news" placeholder="Haber Başlığı" value="<?php echo $update->title; ?>">
             </div>
             <div class="form-group">
                 <label for="editor">Haber İçeriği <span class="text-red">*</span></label>
-                <textarea name="content" id="editor" class="form-control validate[required]" placeholder="Haber İçeriği" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ update.content }}</textarea>
+                <textarea name="content" id="editor" class="form-control validate[required]" placeholder="Haber İçeriği" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $update->content; ?></textarea>
             </div>
-            {% if update.photo != '' %}
-                <div class="form-group record" id="record-{{ update.id }}">
+            <?php if ($update->photo != '') { ?>
+                <div class="form-group record" id="record-<?php echo $update->id; ?>">
                     <label for="photo">Eklenen Fotoğraf </label>
                     <br>
-                    <canvas id="canvas" width=150 src="/uploads/{{ update.photo }}"></canvas>
+                    <canvas id="canvas" width=150 src="/uploads/<?php echo $update->photo; ?>"></canvas>
                     <div class="text-red"><strong><a href="/news/delete/photo" class="delete">Fotoğrafı Sil</a></strong></div>
                 </div>
-            {% endif %}
+            <?php } ?>
             <div class="form-group">
                 <label>Fotoğraf Ekle</label>
                 <input type="file" name="photos">
@@ -37,5 +37,5 @@
             <input type="submit" class="btn btn-primary" id="add" value="Haber Ekle">
         </div>
     </form>
-    {% endfor %}
+    <?php } ?>
 </div>
