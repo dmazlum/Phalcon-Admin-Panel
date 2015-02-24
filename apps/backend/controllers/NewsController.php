@@ -7,201 +7,204 @@ use Modules\Backend\Models\News as News;
 class NewsController extends ControllerBase
 {
 
-    public function indexAction($action = NULL, $id = NULL)
-    {
+	public function indexAction ($action = NULL, $id = NULL)
+	{
 
-        if ($action == "edit") {
+		if ($action == "edit") {
 
-            $News = News::find("id=" . $id);
+			$News = News::find("id=" . $id);
 
-            if ($News != false) {
-                $this->view->setVar("UpdateNews", $News);
-            }
-        }
+			if ($News != FALSE) {
+				$this->view->setVar("UpdateNews", $News);
+			}
+		}
 
-        $News = News::find(array('order' => 'seq'));
+		$News = News::find(array('order' => 'seq'));
 
-        if ($News != false) {
-            $this->view->setVar("ListNews", $News);
-        }
-    }
+		if ($News != FALSE) {
+			$this->view->setVar("ListNews", $News);
+		}
+	}
 
 
-    /**
-     * @param null $id
-     */
-    public function editAction($id = NULL)
-    {
+	/**
+	 * @param null $id
+	 */
+	public function editAction ($id = NULL)
+	{
 
-    }
+	}
 
-    /**
-     * List News
-     */
-    public function listAction()
-    {
+	/**
+	 * List News
+	 */
+	public function listAction ()
+	{
 
-    }
+	}
 
-    /**
-     * Add News
-     * @return mixed
-     */
-    public function addAction()
-    {
+	/**
+	 * Add News
+	 * @return mixed
+	 */
+	public function addAction ()
+	{
 
-        //Validate All Fields
-        $validate = $this->MyValidation->validate($_POST);
+		//Validate All Fields
+		$validate = $this->MyValidation->validate($_POST);
 
-        if (count($validate)) {
-            foreach ($validate as $message) {
-                $this->flash->error($message);
-                return false;
-            }
-        } else {
+		if (count($validate)) {
+			foreach ($validate as $message) {
+				$this->flash->error($message);
 
-            $Add = new News();
+				return FALSE;
+			}
+		} else {
 
-            //Check if the user has uploaded files
-            if ($this->request->hasFiles() == true) {
+			$Add = new News();
 
-                //Print the real file names and their sizes
-                foreach ($this->request->getUploadedFiles() as $file) {
+			//Check if the user has uploaded files
+			if ($this->request->hasFiles() == TRUE) {
 
-                    $file->moveTo('uploads/' . $file->getName());
+				//Print the real file names and their sizes
+				foreach ($this->request->getUploadedFiles() as $file) {
 
-                    //Get Filename
-                    $fileName = $file->getName();
-                }
+					$file->moveTo('uploads/' . $file->getName());
 
-                $Add->assign(array(
-                    'title' => $this->request->getPost('title', 'striptags'),
-                    'content' => $this->request->getPost('content'),
-                    'create_date' => date("Y.m.d H:i:s"),
-                    'photo' => $fileName,
-                    'status' => 1,
-                    'seq' => $Add->setOrder()
-                ));
+					//Get Filename
+					$fileName = $file->getName();
+				}
 
-            } else {
+				$Add->assign(array(
+					'title' => $this->request->getPost('title', 'striptags'),
+					'content' => $this->request->getPost('content'),
+					'create_date' => date("Y.m.d H:i:s"),
+					'photo' => $fileName,
+					'status' => 1,
+					'seq' => $Add->setOrder()
+				));
 
-                $Add->assign(array(
-                    'title' => $this->request->getPost('title', 'striptags'),
-                    'content' => $this->request->getPost('content'),
-                    'create_date' => date("Y.m.d H:i:s"),
-                    'status' => 1,
-                    'seq' => $Add->setOrder()
-                ));
-            }
+			} else {
 
-            if (!$Add->save()) {
-                return $this->flash->error('Kayıt Sırasında Hata Oluştu');
-            } else {
-                return $this->flash->success('<strong>Başarılı</strong> Haber başarıyla eklenmiştir. <a href="/admin/news/index">Yeniden eklemek için tıklayınız</a>');
-            }
-        }
+				$Add->assign(array(
+					'title' => $this->request->getPost('title', 'striptags'),
+					'content' => $this->request->getPost('content'),
+					'create_date' => date("Y.m.d H:i:s"),
+					'status' => 1,
+					'seq' => $Add->setOrder()
+				));
+			}
 
-        exit;
-    }
+			if (!$Add->save()) {
+				return $this->flash->error('Kayıt Sırasında Hata Oluştu');
+			} else {
+				return $this->flash->success('<strong>Başarılı</strong> Haber başarıyla eklenmiştir. <a href="/admin/news/index">Yeniden eklemek için tıklayınız</a>');
+			}
+		}
 
-    public function updateAction()
-    {
-        $this->view->disable();
-    }
+		exit;
+	}
 
-    /**
-     * Delete News and News Photos
-     * @param sting $action
-     * @return mixed
-     */
-    public function deleteAction($action = NULL)
-    {
-        $this->view->disable();
+	public function updateAction ()
+	{
+		$this->view->disable();
+	}
 
-        $selected_ID = $this->request->getPost('fieldID');
+	/**
+	 * Delete News and News Photos
+	 *
+	 * @param sting $action
+	 *
+	 * @return mixed
+	 */
+	public function deleteAction ($action = NULL)
+	{
+		$this->view->disable();
 
-        foreach ($selected_ID as $key) {
-            $this->db->delete(
-                "news",
-                "id =" . $key
-            );
-        }
+		$selected_ID = $this->request->getPost('fieldID');
 
-        //Delete Photos
-        if ($action == "photo") {
+		foreach ($selected_ID as $key) {
+			$this->db->delete(
+				"news",
+				"id =" . $key
+			);
+		}
 
-            $PhotoId = $this->request->getPost('id');
-            $photos = News::findFirst("id=".$PhotoId);
+		//Delete Photos
+		if ($action == "photo") {
 
-            if ($photos != "false") {
-                $this->db->update(
-                    "news",
-                    array("photo"),
-                    array(""),
-                    "id =" . $PhotoId
-                );
-            }
-        }
-    }
+			$PhotoId = $this->request->getPost('id');
+			$photos = News::findFirst("id=" . $PhotoId);
 
-    /**
-     * Order News
-     */
-    public function orderAction()
-    {
-        $orderFields = $this->request->getPost('seq');
-        $orderID = $this->request->getPost('seqID');
+			if ($photos != "false") {
+				$this->db->update(
+					"news",
+					array("photo"),
+					array(""),
+					"id =" . $PhotoId
+				);
+			}
+		}
+	}
 
-        foreach ($orderFields as $key => $value) {
+	/**
+	 * Order News
+	 */
+	public function orderAction ()
+	{
+		$orderFields = $this->request->getPost('seq');
+		$orderID = $this->request->getPost('seqID');
 
-            $update = $this->db->update(
-                "news",
-                array("seq"),
-                array($value),
-                "id=" . $orderID[$key]
-            );
+		foreach ($orderFields as $key => $value) {
 
-            if ($update) {
-                $this->flash->success('Sıralama başarılı');
-            }
-        }
-    }
+			$update = $this->db->update(
+				"news",
+				array("seq"),
+				array($value),
+				"id=" . $orderID[$key]
+			);
 
-    public function statusAction($action)
-    {
+			if ($update) {
+				$this->flash->success('Sıralama başarılı');
+			}
+		}
+	}
 
-        $this->view->disable();
+	public function statusAction ($action)
+	{
 
-        //Module Actions
-        if ($action == "disable") {
+		$this->view->disable();
 
-            $query = $this->db->update("news",
-                array("status"),
-                array("0"),
-                "id=" . $this->request->getPost('id')
-            );
+		//Module Actions
+		if ($action == "disable") {
 
-            if ($query) {
-                return $this->flash->success('Modül Güncellendi');
-            } else {
-                return $this->flash->error('Modül Güncellenemedi');
-            }
-        }
+			$query = $this->db->update("news",
+				array("status"),
+				array("0"),
+				"id=" . $this->request->getPost('id')
+			);
 
-        if ($action == "enable") {
+			if ($query) {
+				return $this->flash->success('Modül Güncellendi');
+			} else {
+				return $this->flash->error('Modül Güncellenemedi');
+			}
+		}
 
-            $query = $this->db->update("news",
-                array("status"),
-                array("1"),
-                "id=" . $this->request->getPost('id')
-            );
+		if ($action == "enable") {
 
-            if ($query) {
-                return $this->flash->success('Modül Güncellendi');
-            } else {
-                return $this->flash->error('Modül Güncellenemedi');
-            }
-        }
+			$query = $this->db->update("news",
+				array("status"),
+				array("1"),
+				"id=" . $this->request->getPost('id')
+			);
 
-    }
+			if ($query) {
+				return $this->flash->success('Modül Güncellendi');
+			} else {
+				return $this->flash->error('Modül Güncellenemedi');
+			}
+		}
+
+	}
 }

@@ -17,7 +17,7 @@ class Module
 			'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
 			'Modules\Backend\Models' => __DIR__ . '/models/',
 			'Modules\Backend\Plugins' => __DIR__ . '/plugins/'
-			));
+		));
 
 		$loader->register();
 	}
@@ -30,10 +30,10 @@ class Module
 		 */
 		$config = include __DIR__ . "/config/config.php";
 
-		$di['dispatcher']= function() {
+		$di['dispatcher'] = function () {
 
 			$eventsManager = new \Phalcon\Events\Manager();
-			$eventsManager->attach("dispatch:beforeException", function($event, $dispatcher, $exception) {
+			$eventsManager->attach("dispatch:beforeException", function ($event, $dispatcher, $exception) {
 
 				//Handle 404 exceptions
 				if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception) {
@@ -41,7 +41,8 @@ class Module
 						'controller' => 'index',
 						'action' => 'show404'
 					));
-					return false;
+
+					return FALSE;
 				}
 
 				//Handle other exceptions
@@ -50,7 +51,7 @@ class Module
 					'action' => 'show503'
 				));
 
-				return false;
+				return FALSE;
 			});
 
 			$dispatcher = new \Phalcon\Mvc\Dispatcher();
@@ -65,7 +66,7 @@ class Module
 		/**
 		 * Setting up the view component
 		 */
-		$di['view'] = function() {
+		$di['view'] = function () {
 
 			$view = new \Phalcon\Mvc\View();
 
@@ -75,10 +76,10 @@ class Module
 					$volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
 					$volt->setOptions(array(
-						'compiledPath' => __DIR__ .'/cache/',
+						'compiledPath' => __DIR__ . '/cache/',
 						'compiledSeparator' => '_',
-						'compileAlways' => true // close it
-						));
+						'compileAlways' => TRUE // close it
+					));
 
 					//Add Functions
 					$volt->getCompiler()->addFunction('strtotime', 'strtotime');
@@ -86,7 +87,7 @@ class Module
 					return $volt;
 				},
 				'.phtml' => 'Phalcon\Mvc\View\Engine\Php'
-				));
+			));
 
 			$view->setViewsDir(__DIR__ . '/views/');
 			$view->setLayoutsDir('../../common/layouts/');
@@ -98,25 +99,25 @@ class Module
 		/**
 		 * Database connection is created based in the parameters defined in the configuration file
 		 */
-		$di['db'] = function() use ($config) {
+		$di['db'] = function () use ($config) {
 			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
 				"host" => $config->database->host,
 				"username" => $config->database->username,
 				"password" => $config->database->password,
 				"dbname" => $config->database->name,
 				'charset' => "utf8"
-				));
+			));
 		};
 
 		//Validator
-		$di['MyValidation'] = function() {
+		$di['MyValidation'] = function () {
 			return new MyValidation();
 		};
 
 		//Resizer
-		$di['MyResizer'] = function() {
+		$di['MyResizer'] = function () {
 			return new MyResizer();
 		};
-}
+	}
 
 }

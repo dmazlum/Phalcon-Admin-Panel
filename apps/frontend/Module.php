@@ -5,7 +5,7 @@ namespace Modules\Frontend;
 class Module
 {
 
-	public function registerAutoloaders()
+	public function registerAutoloaders ()
 	{
 
 		$loader = new \Phalcon\Loader();
@@ -18,7 +18,7 @@ class Module
 		$loader->register();
 	}
 
-	public function registerServices($di)
+	public function registerServices ($di)
 	{
 
 		/**
@@ -26,17 +26,38 @@ class Module
 		 */
 		$config = include __DIR__ . "/config/config.php";
 
-		$di['dispatcher'] = function() {
+		$di['dispatcher'] = function () {
 			$dispatcher = new \Phalcon\Mvc\Dispatcher();
 			$dispatcher->setDefaultNamespace("Modules\Frontend\Controllers");
+
 			return $dispatcher;
 		};
 
 		/**
 		 * Setting up the view component
 		 */
-		$di['view'] = function() {
+		$di['view'] = function () {
+
 			$view = new \Phalcon\Mvc\View();
+
+			$view->registerEngines(array(
+				'.volt' => function ($view, $di) {
+
+					$volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+
+					$volt->setOptions(array(
+						'compiledPath' => __DIR__ . '/cache/',
+						'compiledSeparator' => '_',
+						'compileAlways' => TRUE // close it
+					));
+
+					//Add Functions
+					$volt->getCompiler()->addFunction('strtotime', 'strtotime');
+
+					return $volt;
+				},
+				'.phtml' => 'Phalcon\Mvc\View\Engine\Php'
+			));
 
 			$view->setViewsDir(__DIR__ . '/views/');
 			$view->setLayoutsDir('../../common/layouts/');
@@ -48,7 +69,7 @@ class Module
 		/**
 		 * Database connection is created based in the parameters defined in the configuration file
 		 */
-		$di['db'] = function() use ($config) {
+		$di['db'] = function () use ($config) {
 			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
 				"host" => $config->database->host,
 				"username" => $config->database->username,

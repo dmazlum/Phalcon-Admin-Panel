@@ -29,7 +29,8 @@
                         <tr>
                             <td>Trident</td>
                             <td>Internet
-                                Explorer 4.0</td>
+                                Explorer 4.0
+                            </td>
                             <td>Win 95+</td>
                             <td> 4</td>
                             <td>X</td>
@@ -51,7 +52,7 @@
     <script src="/js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
     <!-- page script -->
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             $('#dataTable').dataTable({
                 "bPaginate": true,
                 "bLengthChange": false,

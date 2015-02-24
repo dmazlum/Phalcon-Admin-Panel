@@ -2,11 +2,6 @@
 
 error_reporting(E_ALL);
 
-ini_set('xdebug.collect_vars', 'on');
-ini_set('xdebug.collect_params', '4');
-//ini_set('xdebug.dump_globals', 'on');
-//ini_set('xdebug.dump.SERVER', 'REQUEST_URI');
-ini_set('xdebug.show_local_vars', 'on');
 
 try {
 
@@ -18,10 +13,10 @@ try {
 	/**
 	 * Registering a router
 	 */
-	$di['router'] = function() {
+	$di['router'] = function () {
 
-		$router = new \Phalcon\Mvc\Router(false);
-		$router->removeExtraSlashes(true);
+		$router = new \Phalcon\Mvc\Router(FALSE);
+		$router->removeExtraSlashes(TRUE);
 		$router->setDefaultModule("backend");
 
 		//Set 404 paths
@@ -61,18 +56,20 @@ try {
 	/**
 	 * The URL component is used to generate all kind of urls in the application
 	 */
-	$di->set('url', function() {
+	$di->set('url', function () {
 		$url = new \Phalcon\Mvc\Url();
 		$url->setBaseUri('/');
+
 		return $url;
 	});
 
 	/**
 	 * Start the session the first time some component request the session service
 	 */
-	$di->set('session', function() {
+	$di->set('session', function () {
 		$session = new \Phalcon\Session\Adapter\Files();
 		$session->start();
+
 		return $session;
 	});
 
@@ -99,8 +96,9 @@ try {
 
 	echo $application->handle()->getContent();
 
+
 } catch (Phalcon\Exception $e) {
 	echo $e->getMessage();
-} catch (PDOException $e){
+} catch (PDOException $e) {
 	echo $e->getMessage();
 }
