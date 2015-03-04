@@ -1,34 +1,32 @@
 {% extends "templates/index.volt" %}
 {% block content_header %}
-    <small>Haberler</small>
+    <small>Kategoriler</small>
 {% endblock %}
 {% block breadcrumb %}
-    <li>Haberler</li>
-    <li class="active">Haber Ekle / Düzenle</li>
+    <li>Sayfalar</li>
+    <li class="active">Kategori Ekle / Düzenle</li>
 {% endblock %}
 {% block body %}
 
     {% if pagingUrl[4] == 'edit' %}
-        {% include "news/forms/edit.volt" %}
+        {% include "pages/forms/edit_section.volt" %}
     {% endif %}
 
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">Haberler</h3>
+            <h3 class="box-title">Kategoriler</h3>
         </div>
         <br>
 
         <form id="ListTable">
-            <input type="hidden" name="DeleteURL" value="/admin/news/delete">
-            <input type="hidden" name="SeqURL" value="/admin/news/order">
+            <input type="hidden" name="DeleteURL" value="/admin/pages/delete">
+            <input type="hidden" name="SeqURL" value="/admin/pages/order">
 
             <table id="dataTable" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th class="text-center">Seçiniz</th>
-                    <th class="text-center">ID</th>
-                    <th>Haber Başlığı</th>
-                    <th>Ekleme Tarihi</th>
+                    <th>Kategori Başlığı</th>
                     <th>Sıralama</th>
                     <th class="text-center">Durum</th>
                     <th>İşlemler</th>
@@ -40,9 +38,7 @@
                         <td class="text-center">
                             <input type="checkbox" id="fieldID" name="fieldID[]" value="{{ news.id }}">
                         </td>
-                        <td class="text-center">{{ news.id }}</td>
                         <td>{{ news.title }}</td>
-                        <td>{% set date = news.create_date %} {{ date('d.m.Y', strtotime(date)) }}</td>
                         <td>
                             <input type="text" name="seq[]" class="input-small" value="{{ news.seq }}">
                             <input type="hidden" name="seqID[]" value="{{ news.id }}"/>
@@ -73,11 +69,7 @@
                         <input type="button" class="btn btn-danger btn-xsm" id="delete" value="Sil">
                     </td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <input type="button" class="btn btn-success btn-xsm" id="order" value="Sırala">
-                    </td>
+                    <td><input type="button" class="btn btn-success btn-xsm" id="order" value="Sırala"></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -88,7 +80,7 @@
     <!-- /.box -->
 
     {% if pagingUrl[4] != 'edit' %}
-        {% include "news/forms/add.volt" %}
+        {% include "pages/forms/add_section.volt" %}
     {% endif %}
 
 {% endblock %}

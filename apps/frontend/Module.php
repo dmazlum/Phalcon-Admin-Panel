@@ -5,20 +5,20 @@ namespace Modules\Frontend;
 class Module
 {
 
-	public function registerAutoloaders ()
+	public function registerAutoloaders()
 	{
 
 		$loader = new \Phalcon\Loader();
 
 		$loader->registerNamespaces(array(
 			'Modules\Frontend\Controllers' => __DIR__ . '/controllers/',
-			'Modules\Frontend\Models' => __DIR__ . '/models/',
+			'Modules\Frontend\Models'      => __DIR__ . '/models/',
 		));
 
 		$loader->register();
 	}
 
-	public function registerServices ($di)
+	public function registerServices($di)
 	{
 
 		/**
@@ -41,14 +41,14 @@ class Module
 			$view = new \Phalcon\Mvc\View();
 
 			$view->registerEngines(array(
-				'.volt' => function ($view, $di) {
+				'.volt'  => function ($view, $di) {
 
 					$volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
 					$volt->setOptions(array(
-						'compiledPath' => __DIR__ . '/cache/',
+						'compiledPath'      => __DIR__ . '/cache/',
 						'compiledSeparator' => '_',
-						'compileAlways' => TRUE // close it
+						'compileAlways'     => TRUE // close it
 					));
 
 					//Add Functions
@@ -71,10 +71,10 @@ class Module
 		 */
 		$di['db'] = function () use ($config) {
 			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-				"host" => $config->database->host,
+				"host"     => $config->database->host,
 				"username" => $config->database->username,
 				"password" => $config->database->password,
-				"dbname" => $config->database->name
+				"dbname"   => $config->database->name
 			));
 		};
 

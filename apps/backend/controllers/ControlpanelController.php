@@ -7,12 +7,12 @@ use Modules\Backend\Models\Modules as Modules;
 class ControlpanelController extends ControllerBase
 {
 
-	public function indexAction ()
+	public function indexAction()
 	{
 
 	}
 
-	public function modulesAction ($action)
+	public function modulesAction($action)
 	{
 
 		$modules = Modules::find(array("order" => "id"));

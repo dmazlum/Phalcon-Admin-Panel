@@ -12,7 +12,7 @@ class MyValidation extends Validation
 	public function initialize()
 	{
 		$this->add('title', new StringLength(array(
-			'min' => 2,
+			'min'            => 2,
 			'messageMinimum' => '<strong>HATA</strong> Başlık çok kısa olamaz'
 		)));
 

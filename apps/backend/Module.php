@@ -15,8 +15,8 @@ class Module
 
 		$loader->registerNamespaces(array(
 			'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
-			'Modules\Backend\Models' => __DIR__ . '/models/',
-			'Modules\Backend\Plugins' => __DIR__ . '/plugins/'
+			'Modules\Backend\Models'      => __DIR__ . '/models/',
+			'Modules\Backend\Plugins'     => __DIR__ . '/plugins/'
 		));
 
 		$loader->register();
@@ -39,7 +39,7 @@ class Module
 				if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception) {
 					$dispatcher->forward(array(
 						'controller' => 'index',
-						'action' => 'show404'
+						'action'     => 'show404'
 					));
 
 					return FALSE;
@@ -48,7 +48,7 @@ class Module
 				//Handle other exceptions
 				$dispatcher->forward(array(
 					'controller' => 'index',
-					'action' => 'show503'
+					'action'     => 'show503'
 				));
 
 				return FALSE;
@@ -71,14 +71,14 @@ class Module
 			$view = new \Phalcon\Mvc\View();
 
 			$view->registerEngines(array(
-				'.volt' => function ($view, $di) {
+				'.volt'  => function ($view, $di) {
 
 					$volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
 
 					$volt->setOptions(array(
-						'compiledPath' => __DIR__ . '/cache/',
+						'compiledPath'      => __DIR__ . '/cache/',
 						'compiledSeparator' => '_',
-						'compileAlways' => TRUE // close it
+						'compileAlways'     => TRUE // close it
 					));
 
 					//Add Functions
@@ -101,11 +101,11 @@ class Module
 		 */
 		$di['db'] = function () use ($config) {
 			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-				"host" => $config->database->host,
+				"host"     => $config->database->host,
 				"username" => $config->database->username,
 				"password" => $config->database->password,
-				"dbname" => $config->database->name,
-				'charset' => "utf8"
+				"dbname"   => $config->database->dbname,
+				'charset'  => "utf8"
 			));
 		};
 
@@ -118,6 +118,7 @@ class Module
 		$di['MyResizer'] = function () {
 			return new MyResizer();
 		};
+
 	}
 
 }

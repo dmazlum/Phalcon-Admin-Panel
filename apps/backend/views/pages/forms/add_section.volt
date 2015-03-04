@@ -2,6 +2,7 @@
     <div class="message"></div>
     <div class="box-header">
         <h3 class="box-title">Haber Ekleme Formu</h3>
+
         <div class="box-tools pull-right">
             <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>

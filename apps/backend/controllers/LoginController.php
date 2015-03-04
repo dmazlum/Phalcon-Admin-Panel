@@ -7,61 +7,63 @@ use Modules\Backend\Models\Users as Users;
 class LoginController extends ControllerBase
 {
 
-    private function _registerSession($user)
-    {
-        $this->session->set('auth', array(
-            'id' => $user->id,
-            'name' => $user->name_surname,
-            'username' => $user->username,
-            'role' => $user->role
-        ));
-    }
+	private function _registerSession($user)
+	{
+		$this->session->set('auth', array(
+			'id'       => $user->id,
+			'name'     => $user->name_surname,
+			'username' => $user->username,
+			'role'     => $user->role
+		));
+	}
 
-    public function userloginAction()
-    {
-        //$this->view->disable();
+	public function userloginAction()
+	{
+		//$this->view->disable();
 
-        if ($this->request->isPost()) {
+		if ($this->request->isPost()) {
 
-            //Receiving the variables sent by POST
-            $username = $this->request->getPost('username');
-            $password = $this->request->getPost('password');
+			//Receiving the variables sent by POST
+			$username = $this->request->getPost('username');
+			$password = $this->request->getPost('password');
 
-            $password = sha1($password);
+			$password = sha1($password);
 
-            //Find the user in the database
-            $user = Users::findFirst(array(
-                "username = :username: AND password = :password: AND status = '1'",
-                "bind" => array('username' => $username, 'password' => $password)
-            ));
+			//Find the user in the database
+			$user = Users::findFirst(array(
+				"username = :username: AND password = :password: AND status = '1'",
+				"bind" => array('username' => $username, 'password' => $password)
+			));
 
-            if ($user != false) {
+			if ($user != FALSE) {
 
-                $this->_registerSession($user);
+				$this->_registerSession($user);
 
-                //Last Login and IP Address
-                $ipAddress = $this->request->getClientAddress();
-                $date = date("Y-m-d H:i:s");
+				//Last Login and IP Address
+				$ipAddress = $this->request->getClientAddress();
+				$date = date("Y-m-d H:i:s");
 
-                $this->db->query("update users set
+				$this->db->query("update users set
                                         ip_add='$ipAddress',
                                         last_login = '$date'
                                         WHERE
                                         username = '$username'");
 
 
-                //Forward to the 'dashboard' controller if the user is valid
-                return $this->response->redirect('admin/controlpanel/index');
-            }
+				//Forward to the 'dashboard' controller if the user is valid
+				return $this->response->redirect('admin/controlpanel/index');
+			}
 
-            $this->flash->error('<strong>HATA</strong> Kullanıcı adı veya şifreniz yanlıştır');
-            return false;
-        }
-    }
+			$this->flash->error('<strong>HATA</strong> Kullanıcı adı veya şifreniz yanlıştır');
 
-    public function logoutAction()
-    {
-        $this->session->destroy();
-        return $this->response->redirect('admin');
-    }
+			return FALSE;
+		}
+	}
+
+	public function logoutAction()
+	{
+		$this->session->destroy();
+
+		return $this->response->redirect('admin');
+	}
 }

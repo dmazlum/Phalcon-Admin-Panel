@@ -62,18 +62,18 @@ class Users extends \Phalcon\Mvc\Model
 	/**
 	 * Independent Column Mapping.
 	 */
-	public function columnMap ()
+	public function columnMap()
 	{
 		return array(
-			'id' => 'id',
+			'id'           => 'id',
 			'name_surname' => 'name_surname',
-			'username' => 'username',
-			'password' => 'password',
+			'username'     => 'username',
+			'password'     => 'password',
 			'created_date' => 'created_date',
-			'role' => 'role',
-			'last_login' => 'last_login',
-			'ip_add' => 'ip_add',
-			'status' => 'status'
+			'role'         => 'role',
+			'last_login'   => 'last_login',
+			'ip_add'       => 'ip_add',
+			'status'       => 'status'
 		);
 	}
 

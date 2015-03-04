@@ -50,20 +50,20 @@ class News extends \Phalcon\Mvc\Model
 	/**
 	 * Independent Column Mapping.
 	 */
-	public function columnMap ()
+	public function columnMap()
 	{
 		return array(
-			'id' => 'id',
-			'title' => 'title',
-			'content' => 'content',
+			'id'          => 'id',
+			'title'       => 'title',
+			'content'     => 'content',
 			'create_date' => 'create_date',
-			'photo' => 'photo',
-			'status' => 'status',
-			'seq' => 'seq'
+			'photo'       => 'photo',
+			'status'      => 'status',
+			'seq'         => 'seq'
 		);
 	}
 
-	public function setTitle ()
+	public function setTitle()
 	{
 		//The name is too short?
 		if (strlen($this->title) < 1) {
@@ -78,7 +78,7 @@ class News extends \Phalcon\Mvc\Model
 		return $this->title;
 	}
 
-	public function setContent ()
+	public function setContent()
 	{
 		//The name is too short?
 		if (strlen($this->content) < 10) {
@@ -93,14 +93,14 @@ class News extends \Phalcon\Mvc\Model
 		return $this->content;
 	}
 
-	public function setOrder ()
+	public function setOrder()
 	{
 		if ($this->seq == "") {
 			return $this->seq = "000";
 		}
 	}
 
-	public function setId ($id)
+	public function setId($id)
 	{
 		if ($id == "") {
 			return $this->getMessages('Lütfen bir kayıt seçiniz');

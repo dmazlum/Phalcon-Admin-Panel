@@ -7,7 +7,7 @@ use Modules\Backend\Models\News as News;
 class NewsController extends ControllerBase
 {
 
-	public function indexAction ($action = NULL, $id = NULL)
+	public function indexAction($action = NULL, $id = NULL)
 	{
 
 		if ($action == "edit") {
@@ -30,7 +30,7 @@ class NewsController extends ControllerBase
 	/**
 	 * @param null $id
 	 */
-	public function editAction ($id = NULL)
+	public function editAction($id = NULL)
 	{
 
 	}
@@ -38,7 +38,7 @@ class NewsController extends ControllerBase
 	/**
 	 * List News
 	 */
-	public function listAction ()
+	public function listAction()
 	{
 
 	}
@@ -47,7 +47,7 @@ class NewsController extends ControllerBase
 	 * Add News
 	 * @return mixed
 	 */
-	public function addAction ()
+	public function addAction()
 	{
 
 		//Validate All Fields
@@ -76,22 +76,22 @@ class NewsController extends ControllerBase
 				}
 
 				$Add->assign(array(
-					'title' => $this->request->getPost('title', 'striptags'),
-					'content' => $this->request->getPost('content'),
+					'title'       => $this->request->getPost('title', 'striptags'),
+					'content'     => $this->request->getPost('content'),
 					'create_date' => date("Y.m.d H:i:s"),
-					'photo' => $fileName,
-					'status' => 1,
-					'seq' => $Add->setOrder()
+					'photo'       => $fileName,
+					'status'      => 1,
+					'seq'         => $Add->setOrder()
 				));
 
 			} else {
 
 				$Add->assign(array(
-					'title' => $this->request->getPost('title', 'striptags'),
-					'content' => $this->request->getPost('content'),
+					'title'       => $this->request->getPost('title', 'striptags'),
+					'content'     => $this->request->getPost('content'),
 					'create_date' => date("Y.m.d H:i:s"),
-					'status' => 1,
-					'seq' => $Add->setOrder()
+					'status'      => 1,
+					'seq'         => $Add->setOrder()
 				));
 			}
 
@@ -101,13 +101,68 @@ class NewsController extends ControllerBase
 				return $this->flash->success('<strong>Başarılı</strong> Haber başarıyla eklenmiştir. <a href="/admin/news/index">Yeniden eklemek için tıklayınız</a>');
 			}
 		}
-
-		exit;
 	}
 
-	public function updateAction ()
+	/**
+	 * @param int $id
+	 *
+	 * @return bool|string
+	 */
+	public function updateAction($id)
 	{
 		$this->view->disable();
+
+		//Validate All Fields
+		$validate = $this->MyValidation->validate($_POST);
+
+		if (count($validate)) {
+			foreach ($validate as $message) {
+				$this->flash->error($message);
+
+				return FALSE;
+			}
+		} else {
+
+			$Update = new News();
+
+			//Check if the user has uploaded files
+			if ($this->request->hasFiles() == TRUE) {
+
+				//Print the real file names and their sizes
+				foreach ($this->request->getUploadedFiles() as $file) {
+
+					$file->moveTo('uploads/' . $file->getName());
+
+					//Get Filename
+					$fileName = $file->getName();
+				}
+
+				$query = $this->db->update(
+					"news",
+					array("title", "content", "photo"),
+					array(
+						$this->request->getPost('title', 'striptags'),
+						$this->request->getPost('content'),
+						$fileName),
+					"id=" . $id
+				);
+
+			} else {
+
+				$query = $this->db->update(
+					"news",
+					array("title", "content"),
+					array($this->request->getPost('title', 'striptags'), $this->request->getPost('content')),
+					"id=" . $id
+				);
+			}
+
+			if ($query != TRUE) {
+				return $this->flash->error('Kayıt Sırasında Hata Oluştu');
+			} else {
+				return $this->flash->success('<strong>Başarılı</strong> Haber başarıyla güncellenmiştir. <a href="/admin/news/index">Yeni bir haber güncellemek için tıklayınız</a>');
+			}
+		}
 	}
 
 	/**
@@ -117,7 +172,7 @@ class NewsController extends ControllerBase
 	 *
 	 * @return mixed
 	 */
-	public function deleteAction ($action = NULL)
+	public function deleteAction($action = NULL)
 	{
 		$this->view->disable();
 
@@ -134,15 +189,21 @@ class NewsController extends ControllerBase
 		if ($action == "photo") {
 
 			$PhotoId = $this->request->getPost('id');
-			$photos = News::findFirst("id=" . $PhotoId);
+			$photos = News::find(array("id=" . $PhotoId));
 
 			if ($photos != "false") {
+
 				$this->db->update(
 					"news",
 					array("photo"),
 					array(""),
 					"id =" . $PhotoId
 				);
+
+				//Delete photo from folder
+				foreach ($photos as $row) {
+					unlink("uploads/" . $row->photo);
+				}
 			}
 		}
 	}
@@ -150,7 +211,7 @@ class NewsController extends ControllerBase
 	/**
 	 * Order News
 	 */
-	public function orderAction ()
+	public function orderAction()
 	{
 		$orderFields = $this->request->getPost('seq');
 		$orderID = $this->request->getPost('seqID');
@@ -170,7 +231,7 @@ class NewsController extends ControllerBase
 		}
 	}
 
-	public function statusAction ($action)
+	public function statusAction($action)
 	{
 
 		$this->view->disable();
@@ -185,9 +246,9 @@ class NewsController extends ControllerBase
 			);
 
 			if ($query) {
-				return $this->flash->success('Modül Güncellendi');
+				return $this->flash->success('Durum Güncellendi');
 			} else {
-				return $this->flash->error('Modül Güncellenemedi');
+				return $this->flash->error('Durum Güncellenemedi');
 			}
 		}
 
@@ -200,9 +261,9 @@ class NewsController extends ControllerBase
 			);
 
 			if ($query) {
-				return $this->flash->success('Modül Güncellendi');
+				return $this->flash->success('Durum Güncellendi');
 			} else {
-				return $this->flash->error('Modül Güncellenemedi');
+				return $this->flash->error('Durum Güncellenemedi');
 			}
 		}
 
