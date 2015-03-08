@@ -2,6 +2,9 @@
 
 namespace Modules\Backend\Models;
 
+use Phalcon\Mvc\Model\Validator\PresenceOf,
+	Phalcon\Mvc\Model\Validator\StringLength as StringLength;
+
 class News extends \Phalcon\Mvc\Model
 {
 
@@ -63,36 +66,6 @@ class News extends \Phalcon\Mvc\Model
 		);
 	}
 
-	public function setTitle()
-	{
-		//The name is too short?
-		if (strlen($this->title) < 1) {
-			return $this->getMessages('Haber başlığı kısa olamaz');
-		}
-
-		//The name is too short?
-		if ($this->title == "") {
-			return $this->getMessages('Haber başlığı boş olamaz');
-		}
-
-		return $this->title;
-	}
-
-	public function setContent()
-	{
-		//The name is too short?
-		if (strlen($this->content) < 10) {
-			return $this->getMessages('Haber içeriği çok kısa olamaz');
-		}
-
-		//The name is too short?
-		if ($this->content == "") {
-			return $this->getMessages('Haber içeriği boş olamaz');
-		}
-
-		return $this->content;
-	}
-
 	public function setOrder()
 	{
 		if ($this->seq == "") {
@@ -100,13 +73,34 @@ class News extends \Phalcon\Mvc\Model
 		}
 	}
 
-	public function setId($id)
+	public function setPhoto($photo)
 	{
-		if ($id == "") {
-			return $this->getMessages('Lütfen bir kayıt seçiniz');
-		} else {
-			$this->id = $id;
+		if ($photo != "") {
+			return $this->photo = $photo;
 		}
+
+		return $this->photo;
 	}
 
+	public function validation()
+	{
+
+		$this->validate(new PresenceOf(array(
+			"field"   => "title",
+			"message" => "<strong>HATA</strong> Başlık boş olamaz"
+		)));
+
+		$this->validate(new StringLength(array(
+			"field"          => "content",
+			"min"            => 2,
+			'messageMinimum' => "<strong>HATA</strong> İçerik çok kısa olamaz"
+		)));
+
+		$this->validate(new PresenceOf(array(
+			"field"   => "content",
+			"message" => "<strong>HATA</strong> İçerik boş olamaz"
+		)));
+
+		return $this->validationHasFailed() != TRUE;
+	}
 }

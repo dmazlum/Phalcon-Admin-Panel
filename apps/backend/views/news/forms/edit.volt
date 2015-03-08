@@ -1,4 +1,4 @@
-<div class="box box-primary" id="collapse_load">
+<div class="box box-primary">
     <div class="message"></div>
     <div class="box-header">
         <h3 class="box-title">Haber Düzenleme Formu</h3>

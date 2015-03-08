@@ -7,6 +7,9 @@ use Modules\Backend\Models\Contact;
 class ContactController extends ControllerBase
 {
 
+	/**
+	 * Contact Index
+	 */
 	public function indexAction()
 	{
 
@@ -18,6 +21,13 @@ class ContactController extends ControllerBase
 		}
 	}
 
+	/**
+	 * Contact update
+	 *
+	 * @param $id
+	 *
+	 * @return string
+	 */
 	public function updateAction($id)
 	{
 

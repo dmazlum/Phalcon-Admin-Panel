@@ -10,17 +10,15 @@
         {% include "contact/forms/add.volt" %}
 {% endblock %}
 {% block js %}
-    <script src="/js/AdminLTE/formProcess.js" type="text/javascript"></script>
+    <script src="/dist/js/formProcess.js" type="text/javascript"></script>
     <!-- CK Editor -->
-    <script src="/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-    <script src="/js/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.tr-TR.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+    <script src="/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.tr-TR.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
             $("#editor").wysihtml5({
-                toolbar: {
-                    "html": true,
-                    "fa": true
-                },
+                html: true,
+                fa: true,
                 locale: "tr-TR"
             });
         });

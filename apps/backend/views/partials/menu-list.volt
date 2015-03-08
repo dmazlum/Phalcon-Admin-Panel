@@ -9,7 +9,7 @@
                 {% if activemodules.module_id == module_links.module_id %}
                 <li>
                     <a href="/admin/{{ activemodules.module_file }}/{{ module_links.menu_url }}">
-                        <i class="fa fa-angle-double-right"></i>{{ module_links.menu_fieldname }}
+                        <i class="fa fa-circle-o"></i>{{ module_links.menu_fieldname }}
                     </a>
                 </li>
                     {% endif %}

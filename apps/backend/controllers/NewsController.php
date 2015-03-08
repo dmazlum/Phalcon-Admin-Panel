@@ -50,18 +50,9 @@ class NewsController extends ControllerBase
 	public function addAction()
 	{
 
-		//Validate All Fields
-		$validate = $this->MyValidation->validate($_POST);
+		$Add = new News();
 
-		if (count($validate)) {
-			foreach ($validate as $message) {
-				$this->flash->error($message);
-
-				return FALSE;
-			}
-		} else {
-
-			$Add = new News();
+		if ($this->request->isPost()) {
 
 			//Check if the user has uploaded files
 			if ($this->request->hasFiles() == TRUE) {
@@ -74,29 +65,19 @@ class NewsController extends ControllerBase
 					//Get Filename
 					$fileName = $file->getName();
 				}
-
-				$Add->assign(array(
-					'title'       => $this->request->getPost('title', 'striptags'),
-					'content'     => $this->request->getPost('content'),
-					'create_date' => date("Y.m.d H:i:s"),
-					'photo'       => $fileName,
-					'status'      => 1,
-					'seq'         => $Add->setOrder()
-				));
-
-			} else {
-
-				$Add->assign(array(
-					'title'       => $this->request->getPost('title', 'striptags'),
-					'content'     => $this->request->getPost('content'),
-					'create_date' => date("Y.m.d H:i:s"),
-					'status'      => 1,
-					'seq'         => $Add->setOrder()
-				));
 			}
 
+			$Add->assign(array(
+				'title'       => $this->request->getPost('title', 'striptags'),
+				'content'     => $this->request->getPost('content', 'striptags'),
+				'create_date' => date("Y.m.d H:i:s"),
+				'photo'       => $Add->setPhoto($fileName),
+				'status'      => 1,
+				'seq'         => $Add->setOrder()
+			));
+
 			if (!$Add->save()) {
-				return $this->flash->error('Kayıt Sırasında Hata Oluştu');
+				return $this->flash->error($Add->getMessages());
 			} else {
 				return $this->flash->success('<strong>Başarılı</strong> Haber başarıyla eklenmiştir. <a href="/admin/news/index">Yeniden eklemek için tıklayınız</a>');
 			}
@@ -104,6 +85,8 @@ class NewsController extends ControllerBase
 	}
 
 	/**
+	 * Update News
+	 *
 	 * @param int $id
 	 *
 	 * @return bool|string
@@ -112,18 +95,9 @@ class NewsController extends ControllerBase
 	{
 		$this->view->disable();
 
-		//Validate All Fields
-		$validate = $this->MyValidation->validate($_POST);
+		$Update = News::findFirstById($id);
 
-		if (count($validate)) {
-			foreach ($validate as $message) {
-				$this->flash->error($message);
-
-				return FALSE;
-			}
-		} else {
-
-			$Update = new News();
+		if ($this->request->isPost()) {
 
 			//Check if the user has uploaded files
 			if ($this->request->hasFiles() == TRUE) {
@@ -136,29 +110,16 @@ class NewsController extends ControllerBase
 					//Get Filename
 					$fileName = $file->getName();
 				}
-
-				$query = $this->db->update(
-					"news",
-					array("title", "content", "photo"),
-					array(
-						$this->request->getPost('title', 'striptags'),
-						$this->request->getPost('content'),
-						$fileName),
-					"id=" . $id
-				);
-
-			} else {
-
-				$query = $this->db->update(
-					"news",
-					array("title", "content"),
-					array($this->request->getPost('title', 'striptags'), $this->request->getPost('content')),
-					"id=" . $id
-				);
 			}
 
-			if ($query != TRUE) {
-				return $this->flash->error('Kayıt Sırasında Hata Oluştu');
+			$Update->assign(array(
+				"title"   => $this->request->getPost('title', 'striptags'),
+				"content" => $this->request->getPost('content'),
+				"photo"   => $Update->setPhoto($fileName)
+			));
+
+			if (!$Update->save()) {
+				return $this->flash->error($Update->getMessages());
 			} else {
 				return $this->flash->success('<strong>Başarılı</strong> Haber başarıyla güncellenmiştir. <a href="/admin/news/index">Yeni bir haber güncellemek için tıklayınız</a>');
 			}
@@ -231,6 +192,13 @@ class NewsController extends ControllerBase
 		}
 	}
 
+	/**
+	 * Change News Status
+	 *
+	 * @param $action
+	 *
+	 * @return string
+	 */
 	public function statusAction($action)
 	{
 

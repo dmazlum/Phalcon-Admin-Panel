@@ -52,5 +52,5 @@
     </div>
 {% endblock %}
 {% block js %}
-<script src="/js/AdminLTE/formProcess.js" type="text/javascript"></script>
+<script src="/dist/js/formProcess.js" type="text/javascript"></script>
 {% endblock %}

@@ -1,32 +1,93 @@
-<div class="box box-primary" id="collapse_load">
-    <div class="message"></div>
-    <div class="box-header">
-        <h3 class="box-title">Haber Ekleme Formu</h3>
+<!-- form start -->
+<form role="form" action="/admin/pages/add" id="addForm">
+<div class="col-md-7">
+    <div class="box box-primary" id="collapse_load">
+        <div class="message"></div>
+        <div class="box-header">
+            <h3 class="box-title">Sayfa Ekle</h3>
 
-        <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <div class="box-tools pull-right">
+                <button class="btn btn-primary btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
         </div>
+        <!-- /.box-header -->
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="title">Sayfa Başlığı</label>
+                    <input type="text" name="page_title" class="form-control" id="title" placeholder="Sayfa Başlığı">
+                    <div class="seo_url" style="display: none;">
+                        <p>http://www.webadresiniz.com/<span id="seo_url"></span></p>
+                    </div>
+                    <input type="hidden" name="seo_url" value="" id="seo_hidden"/>
+                </div>
+                <div class="form-group">
+                    <label for="editor">Sayfa İçeriği</label>
+                    <textarea name="page_content" id="editor" class="form-control validate[required]" placeholder="Sayfa İçeriği" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="seo_description">Seo Açıklaması</label>
+                    <input type="text" name="seo_description" class="form-control" id="seo_description" placeholder="Seo Açıklaması">
+                </div>
+                <div class="form-group">
+                    <label for="seo_keywords">Seo Anahtar Kelimeler</label>
+                    <input type="text" name="seo_keywords" class="form-control" id="seo_keywords" placeholder="Seo Anahtar Kelimeler">
+                </div>
+                <div class="form-group">
+                    <label for="external_url">Sayfa Dış Link</label>
+                    <input type="text" name="external_url" class="form-control" id="external_url" placeholder="Sayfa Dış Link">
+                </div>
+                <div class="form-group">
+                    <label for="module_id">Sayfa Modülü</label> <br>
+
+                    <div class="row col-xs-4">
+                        <select name="module_id" class="form-control" id="module_id">
+                            <option value="">Lütfen Seçiniz</option>
+                            {% for catModule in ListModule %}
+                                <option value="{{ catModule.module_id }}">{{ catModule.module_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <input type="submit" class="btn btn-primary" id="add" value="Ekle">
+            </div>
     </div>
-    <!-- /.box-header -->
-    <!-- form start -->
-    <form role="form" action="/admin/news/add" id="addForm" enctype="multipart/form-data">
-        <div class="box-body">
-            <div class="form-group">
-                <label for="news">Haber Başlığı <span class="text-red">*</span></label>
-                <input type="text" name="title" class="form-control validate[required]" id="news" placeholder="Haber Başlığı">
-            </div>
-            <div class="form-group">
-                <label for="editor">Haber İçeriği <span class="text-red">*</span></label>
-                <textarea name="content" id="editor" class="form-control validate[required]" placeholder="Haber İçeriği" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Fotoğraf Ekle</label>
-                <input type="file" name="photos">
-            </div>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            <input type="submit" class="btn btn-primary" id="add" value="Haber Ekle">
-        </div>
-    </form>
 </div>
+
+<div class="col-md-5">
+    <div class="box box-warning" id="collapse_load">
+        <div class="box-header">
+            <h3 class="box-title">Kategori Bölümü Seçimi</h3>
+
+            <div class="box-tools pull-right">
+                <button class="btn btn-warning btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+            <div class="box-body">
+                <p>Bu bölümden, eklediğiniz sayfayla ilgili bir kategori seçebilirsiniz. Eğer sayfanız bir kategoriye ait değilse herhangi bir seçim yapılması gerekmemektedir.</p>
+
+                <div class="form-group">
+                    <label for="news">Sayfa Kategorisi</label>
+                    <br>
+                    <div class="row col-xs-7">
+                        <select name="page_id" class="form-control" id="page_id">
+                            <option value="">Lütfen Seçiniz</option>
+                            {% for categories in ListCategories %}
+                            <option value="{{ categories.id }}">{{ categories.page_title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                </div>
+
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer"></div>
+    </div>
+</div>
+</form>
+<div class="clearfix"></div>

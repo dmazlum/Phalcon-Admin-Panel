@@ -109,11 +109,6 @@ class Module
 			));
 		};
 
-		//Validator
-		$di['MyValidation'] = function () {
-			return new MyValidation();
-		};
-
 		//Resizer
 		$di['MyResizer'] = function () {
 			return new MyResizer();

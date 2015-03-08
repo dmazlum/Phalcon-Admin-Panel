@@ -2,6 +2,10 @@
 
 namespace Modules\Backend\Models;
 
+use Phalcon\Mvc\Model\Validator\PresenceOf,
+	Phalcon\Mvc\Model\Validator\StringLength as StringLength,
+	Phalcon\Mvc\Model\Validator\Uniqueness;
+
 class Users extends \Phalcon\Mvc\Model
 {
 
@@ -27,7 +31,7 @@ class Users extends \Phalcon\Mvc\Model
 	 *
 	 * @var string
 	 */
-	public $password;
+	protected $password;
 
 	/**
 	 *
@@ -77,4 +81,45 @@ class Users extends \Phalcon\Mvc\Model
 		);
 	}
 
+	public function setPassword($password)
+	{
+
+		if ($password != "") {
+			return $this->password = sha1($password);
+		}
+
+		return $this->password;
+	}
+
+	public function validation()
+	{
+
+		$this->validate(new Uniqueness(array(
+			"field"   => "username",
+			"message" => "Bu kullanıcı sistemde zaten kayıtlıdır."
+		)));
+
+		$this->validate(new PresenceOf(array(
+			"field"   => "username",
+			"message" => "<strong>HATA</strong> Kullanıcı adı boş olamaz"
+		)));
+
+		$this->validate(new PresenceOf(array(
+			"field"   => "password",
+			"message" => "<strong>HATA</strong> Şifreniz boş olamaz"
+		)));
+
+		$this->validate(new StringLength(array(
+			"field"          => "password",
+			"min"            => 2,
+			'messageMinimum' => "<strong>HATA</strong> Şifreniz çok kısa olamaz"
+		)));
+
+		$this->validate(new PresenceOf(array(
+			"field"   => "role",
+			"message" => "<strong>HATA</strong> Kullanıcı türü boş olamaz"
+		)));
+
+		return $this->validationHasFailed() != TRUE;
+	}
 }
