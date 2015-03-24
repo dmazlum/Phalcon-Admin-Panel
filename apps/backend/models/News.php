@@ -42,6 +42,12 @@ class News extends \Phalcon\Mvc\Model
 	 *
 	 * @var string
 	 */
+	public $seo_url;
+
+	/**
+	 *
+	 * @var string
+	 */
 	public $status;
 
 	/**
@@ -61,6 +67,7 @@ class News extends \Phalcon\Mvc\Model
 			'content'     => 'content',
 			'create_date' => 'create_date',
 			'photo'       => 'photo',
+			'seo_url'     => 'seo_url',
 			'status'      => 'status',
 			'seq'         => 'seq'
 		);

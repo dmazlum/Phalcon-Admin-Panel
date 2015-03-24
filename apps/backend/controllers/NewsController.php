@@ -2,7 +2,8 @@
 
 namespace Modules\Backend\Controllers;
 
-use Modules\Backend\Models\News as News;
+use Modules\Backend\Models\News as News,
+	Modules\Backend\Plugins\SeoUrl;
 
 class NewsController extends ControllerBase
 {
@@ -28,22 +29,6 @@ class NewsController extends ControllerBase
 
 
 	/**
-	 * @param null $id
-	 */
-	public function editAction($id = NULL)
-	{
-
-	}
-
-	/**
-	 * List News
-	 */
-	public function listAction()
-	{
-
-	}
-
-	/**
 	 * Add News
 	 * @return mixed
 	 */
@@ -67,11 +52,15 @@ class NewsController extends ControllerBase
 				}
 			}
 
+			// Create Seo URL
+			$seo_url = new SeoUrl();
+
 			$Add->assign(array(
 				'title'       => $this->request->getPost('title', 'striptags'),
-				'content'     => $this->request->getPost('content', 'striptags'),
+				'content'     => $this->request->getPost('content'),
 				'create_date' => date("Y.m.d H:i:s"),
 				'photo'       => $Add->setPhoto($fileName),
+				'seo_url'     => $seo_url->create($this->request->getPost('title', 'striptags')),
 				'status'      => 1,
 				'seq'         => $Add->setOrder()
 			));
@@ -112,9 +101,13 @@ class NewsController extends ControllerBase
 				}
 			}
 
+			// Create Seo URL
+			$seo_url = new SeoUrl();
+
 			$Update->assign(array(
 				"title"   => $this->request->getPost('title', 'striptags'),
 				"content" => $this->request->getPost('content'),
+				"seo_url" => $seo_url->create($this->request->getPost('title', 'striptags')),
 				"photo"   => $Update->setPhoto($fileName)
 			));
 

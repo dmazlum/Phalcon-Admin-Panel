@@ -4087,3 +4087,21 @@ Gradient Background colors
     width: 14%;
     text-align: center;
 }
+
+/*Select Menu */
+.menuSelect {
+    background: #367FA9;
+    color: #fff;
+    padding: 5px;
+    font-weight: 500;
+}
+#cleanMenu {
+    cursor: pointer;
+}
+
+/* Message  */
+.message {
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 8px;
+}

@@ -210,17 +210,25 @@ $("#title").on("input", function () {
         $(".seo_url").fadeOut("slow");
     }
 
-    $("#seo_url").html(urlTitle(baslik));
-    $("#seo_hidden").val(urlTitle(baslik));
+    $("#seo_hidden").val($("#seo_url").html());
+
+        $('#title').friendurl({id : 'seo_url', divider: '-', transliterate: true});
+
 });
 
-function urlTitle(text) {
-    var characters = [' ', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '_', '{', '}', '[', ']', '|', '/', '<', '>', ',', '.', '?', '--'];
+/* Sub Menu */
+$("#SubMenu li a").click(function (e) {
 
-    for (var i = 0; i < characters.length; i++) {
-        var char = String(characters[i]);
-        text = text.replace(new RegExp("\\" + char, "g"), '-');
-    }
-    text = text.toLowerCase();
-    return text;
-}
+    e.preventDefault;
+
+    var menuID = $(this).attr("id");
+    $('.menuSelect').removeClass('menuSelect');
+    $(this).addClass('menuSelect');
+
+    $("#changePageID").val(menuID);
+});
+
+$("#cleanMenu").click(function () {
+    $('#SubMenu li a').removeClass('menuSelect');
+    $("#changePageID").val("");
+});

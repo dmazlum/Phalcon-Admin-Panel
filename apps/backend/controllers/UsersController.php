@@ -124,7 +124,7 @@ class UsersController extends ControllerBase
 	}
 
 	/**
-	 * Change News Status
+	 * Change User Status
 	 *
 	 * @param $action
 	 *
@@ -165,7 +165,6 @@ class UsersController extends ControllerBase
 				return $this->flash->error('Durum Güncellenemedi');
 			}
 		}
-
 	}
 }
 

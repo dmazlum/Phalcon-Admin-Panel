@@ -7,6 +7,11 @@ use Modules\Backend\Models\Users as Users;
 class LoginController extends ControllerBase
 {
 
+	/**
+	 * Session
+	 *
+	 * @param $user
+	 */
 	private function _registerSession($user)
 	{
 		$this->session->set('auth', array(
@@ -17,6 +22,11 @@ class LoginController extends ControllerBase
 		));
 	}
 
+	/**
+	 * User Login
+	 *
+	 * @return bool|\Phalcon\Http\ResponseInterface
+	 */
 	public function userloginAction()
 	{
 		//$this->view->disable();
@@ -60,6 +70,11 @@ class LoginController extends ControllerBase
 		}
 	}
 
+	/**
+	 * Logout
+	 *
+	 * @return \Phalcon\Http\ResponseInterface
+	 */
 	public function logoutAction()
 	{
 		$this->session->destroy();

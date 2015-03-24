@@ -13,6 +13,7 @@
     <link href="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="/plugins/validation/validationEngine.jquery.css" rel="stylesheet" type="text/css" />
+    <link href="/plugins/iCheck/all.css" rel="stylesheet" type="text/css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,7 +29,7 @@
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="index2.html" class="logo"><b>Admin</b>Panel v1</a>
+        <a href="#" class="logo"><b>Admin</b>Panel v1</a>
 
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -156,7 +157,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content clearfix">
             
     <div class="col-xs-12">
         <div class="box">
@@ -216,10 +217,16 @@
 <script src="/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <!-- AdminLTE App -->
 <script src="/dist/js/app.min.js" type="text/javascript"></script>
-<!-- SlimScroll -->
-<script src="/plugins/slimScroll/jquery.slimScroll.min.js" type="text/javascript"></script>
-<!-- FastClick -->
-<script src='/plugins/fastclick/fastclick.min.js'></script>
+<!-- iCheck 1.0.1 -->
+<script src="/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function(){
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-red',
+            radioClass: 'iradio_flat-red'
+        });
+    });
+</script>
 <!-- Validation -->
 <script type="text/javascript" src="/plugins/validation/jquery.validationEngine.js"></script>
 <script type="text/javascript" src="/plugins/validation/jquery.validationEngine-tr.js"></script>

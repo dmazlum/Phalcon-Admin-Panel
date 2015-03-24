@@ -36,7 +36,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <input type="submit" class="btn btn-primary" id="add" value="Haber Ekle">
+                <input type="submit" class="btn btn-primary" id="add" value="Düzenle">
             </div>
         </form>
     {% endfor %}

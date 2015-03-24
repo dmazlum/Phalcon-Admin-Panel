@@ -40,7 +40,7 @@ class ContactController extends ControllerBase
 				array('company', 'address', 'phone', 'phone2', 'mobile', 'fax', 'web', 'email'),
 				array(
 					$this->request->getPost('company', 'striptags'),
-					$this->request->getPost('address', 'striptags'),
+					$this->request->getPost('address'),
 					$this->request->getPost('phone'),
 					$this->request->getPost('phone2'),
 					$this->request->getPost('mobile'),

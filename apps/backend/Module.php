@@ -14,9 +14,9 @@ class Module
 		$loader = new \Phalcon\Loader();
 
 		$loader->registerNamespaces(array(
-			'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
-			'Modules\Backend\Models'      => __DIR__ . '/models/',
-			'Modules\Backend\Plugins'     => __DIR__ . '/plugins/'
+			'Modules\Backend\Controllers'     => __DIR__ . '/controllers/',
+			'Modules\Backend\Models'          => __DIR__ . '/models/',
+			'Modules\Backend\Plugins'         => __DIR__ . '/plugins/'
 		));
 
 		$loader->register();

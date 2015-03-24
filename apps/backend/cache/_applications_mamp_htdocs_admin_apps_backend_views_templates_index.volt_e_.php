@@ -152,12 +152,12 @@ a:9:{i:0;s:7396:"<!DOCTYPE html>
                 <li><a href="/admin/controlpanel/index"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
                 ";s:10:"breadcrumb";a:1:{i:0;a:4:{s:4:"type";i:357;s:5:"value";s:74:"
                     <li class="active">Hoşgeldiniz</li>
-                ";s:4:"file";s:71:"/Applications/MAMP/htdocs/admin/apps/backend/views/templates/index.volt";s:4:"line";i:155;}}i:2;s:115:"
+                ";s:4:"file";s:71:"/Applications/MAMP/htdocs/admin/apps/backend/views/templates/index.volt";s:4:"line";i:155;}}i:2;s:124:"
             </ol>
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content clearfix">
             ";s:4:"body";a:1:{i:0;a:4:{s:4:"type";i:357;s:5:"value";s:13:"
             ";s:4:"file";s:71:"/Applications/MAMP/htdocs/admin/apps/backend/views/templates/index.volt";s:4:"line";i:162;}}i:3;s:928:"
         </section>

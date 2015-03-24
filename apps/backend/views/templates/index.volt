@@ -157,7 +157,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content clearfix">
             {% block body %}
             {% endblock %}
         </section>

@@ -32,7 +32,7 @@
                 <br/><br/>
             </div>
             <div class="form-group">
-                <label>Kullanıcı Türü</label>
+                <label>Kullanıcı Türü <span class="text-red">*</span></label>
                 <br>
                 <div class="row col-xs-2">
                 <select name="role" class="form-control validate[required]" id="roles">

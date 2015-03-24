@@ -4,19 +4,17 @@
 {% endblock %}
 {% block breadcrumb %}
     <li>Sayfalar</li>
-    <li class="active">Kategori Ekle / Düzenle</li>
+    <li class="active">Sayfa Ekle</li>
 {% endblock %}
 {% block body %}
     {% if pagingUrl[4] != 'edit' %}
         {% include "pages/forms/add_section.volt" %}
     {% endif %}
 
-    {% if pagingUrl[4] == 'edit' %}
-        {% include "pages/forms/edit_section.volt" %}
-    {% endif %}
     <!-- /.box -->
 {% endblock %}
 {% block js %}
+    <script src="/dist/js/jquery.friendurl.min.js" type="text/javascript"></script>
     <script src="/dist/js/formProcess.js" type="text/javascript"></script>
     <!-- CK Editor -->
     <script src="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
